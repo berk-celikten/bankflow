@@ -1,0 +1,33 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "BankFlow: Ortamı kontrol et",
+      "type": "process",
+      "command": "node",
+      "args": ["${workspaceFolder}/scripts/check-environment.mjs"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "BankFlow: Hafıza uzunluğunu kontrol et",
+      "type": "process",
+      "command": "node",
+      "args": ["${workspaceFolder}/scripts/context-budget.mjs"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "BankFlow: Çalışma alanını doğrula",
+      "type": "process",
+      "command": "node",
+      "args": ["${workspaceFolder}/scripts/verify-workspace.mjs"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "group": { "kind": "test", "isDefault": true }
+    }
+  ]
+}

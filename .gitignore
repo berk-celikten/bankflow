@@ -1,0 +1,19 @@
+# Yerel bağımlılıklar ve derleme çıktıları
+node_modules/
+target/
+dist/
+coverage/
+
+# Yerel çalışma verileri ve gizli bilgiler
+.env
+.env.*
+!.env.example
+*.log
+.work/
+.local/
+
+# Editör ve işletim sistemi
+.DS_Store
+Thumbs.db
+.idea/
+*.iml

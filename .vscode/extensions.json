@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "openai.chatgpt",
+    "vscjava.vscode-java-pack",
+    "vmware.vscode-spring-boot",
+    "esbenp.prettier-vscode",
+    "tamasfe.even-better-toml"
+  ]
+}
