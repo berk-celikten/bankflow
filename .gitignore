@@ -17,3 +17,11 @@ coverage/
 Thumbs.db
 .idea/
 *.iml
+
+# Yerel çalışma yardımcıları
+/.codex/
+/.vscode/
+/AGENTS.md
+/docs/
+/memory/
+/scripts/
