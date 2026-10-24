@@ -686,36 +686,7 @@ function Bank({ user, onLogout }: { user: User; onLogout: () => void }) {
                 />
               )}
               {page === "audit" && operator && (
-                <section className="panel">
-                  <div className="section-title">
-                    <div>
-                      <h2>İşlem günlüğü</h2>
-                      <p>{audit.length} kayıt</p>
-                    </div>
-                    <History size={22} />
-                  </div>
-                  {audit.length ? (
-                    <div className="audit-list">
-                      {audit.map((item) => (
-                        <div className="audit-row" key={item.id}>
-                          <span className="audit-dot">
-                            <Check size={16} />
-                          </span>
-                          <div>
-                            <strong>{eventLabel(item.eventType)}</strong>
-                            <p>{item.details}</p>
-                            <small>
-                              {item.actorName} · {item.reference || "—"}
-                            </small>
-                          </div>
-                          <time>{date(item.createdAt)}</time>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <Empty text="Denetim kayıtları burada görünecek." />
-                  )}
-                </section>
+                <AuditPage audit={audit} />
               )}
             </>
           )}
@@ -836,6 +807,101 @@ function TransferTable({
     </div>
   ) : (
     <Empty text="Bu görünümde listelenecek bir transfer bulunamadı." />
+  );
+}
+function AuditPage({ audit }: { audit: Audit[] }) {
+  const [filter, setFilter] = useState("ALL"),
+    [search, setSearch] = useState("");
+  const query = search.trim().toLocaleLowerCase("tr");
+  const filtered = audit.filter(
+    (item) =>
+      (filter === "ALL" || item.eventType === filter) &&
+      [item.actorName, item.reference, item.details]
+        .join(" ")
+        .toLocaleLowerCase("tr")
+        .includes(query),
+  );
+  return (
+    <section className="panel">
+      <div className="section-title">
+        <div>
+          <h2>İşlem günlüğü</h2>
+          <p>{audit.length} kayıt</p>
+        </div>
+        <History size={22} />
+      </div>
+      <div className="list-toolbar audit-toolbar">
+        <div className="tabs" role="group" aria-label="Olay türü filtresi">
+          {[
+            ["ALL", "Tümü"],
+            ["TRANSFER_REQUESTED", "Talepler"],
+            ["TRANSFER_COMPLETED", "Tamamlanan"],
+            ["TRANSFER_REJECTED", "Reddedilen"],
+          ].map(([value, label]) => (
+            <button
+              type="button"
+              key={value}
+              className={filter === value ? "selected" : ""}
+              aria-pressed={filter === value}
+              onClick={() => setFilter(value)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        <label className="search">
+          <Search size={17} />
+          <span className="sr-only">Kullanıcı, referans veya açıklama ara</span>
+          <input
+            type="search"
+            placeholder="Kullanıcı, referans, açıklama"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+          />
+        </label>
+        <button
+          type="button"
+          className="text-button"
+          disabled={filter === "ALL" && search === ""}
+          onClick={() => {
+            setFilter("ALL");
+            setSearch("");
+          }}
+        >
+          Temizle
+        </button>
+      </div>
+      {filtered.length ? (
+        <div className="audit-list">
+          {filtered.map((item) => (
+            <div className="audit-row" key={item.id}>
+              <span className="audit-dot">
+                <Check size={16} />
+              </span>
+              <div>
+                <strong>{eventLabel(item.eventType)}</strong>
+                <p>{item.details}</p>
+                <small>
+                  {item.actorName} · {item.reference || "—"}
+                </small>
+              </div>
+              <time>{date(item.createdAt)}</time>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <Empty
+          text={
+            audit.length
+              ? "Bu filtre ve aramayla eşleşen kayıt bulunamadı. Tümü’nü seçebilir veya filtreleri temizleyebilirsiniz."
+              : "Denetim kayıtları burada görünecek."
+          }
+        />
+      )}
+      <div className="list-footer" role="status" aria-live="polite">
+        {filtered.length} / {audit.length} kayıt listeleniyor
+      </div>
+    </section>
   );
 }
 function HistoryPage({
@@ -1539,6 +1605,7 @@ function eventLabel(event: string) {
     (
       {
         TRANSFER_CREATED: "Transfer oluşturuldu",
+        TRANSFER_REQUESTED: "Talep oluşturuldu",
         TRANSFER_COMPLETED: "Transfer tamamlandı",
         TRANSFER_APPROVED: "Transfer onaylandı",
         TRANSFER_REJECTED: "Transfer reddedildi",

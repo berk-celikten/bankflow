@@ -1150,6 +1150,20 @@ textarea {
 .audit-list {
   padding: 0 27px;
 }
+.audit-toolbar {
+  flex-wrap: wrap;
+}
+.audit-toolbar .tabs {
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+.audit-toolbar .search {
+  min-width: 0;
+  max-width: 100%;
+}
+.audit-toolbar .text-button {
+  flex-shrink: 0;
+}
 .audit-row {
   display: flex;
   gap: 15px;
