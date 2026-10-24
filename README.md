@@ -1,5 +1,7 @@
 # BankFlow
 
+[![Build and test](https://github.com/berk-celikten/bankflow/actions/workflows/checks.yml/badge.svg)](https://github.com/berk-celikten/bankflow/actions/workflows/checks.yml)
+
 Java Spring Boot, React ve Oracle ile geliştirilen bankacılık simülasyonu. Müşteriler sanal TL hesaplarını ve hesap hareketlerini görüntüler, transfer oluşturur; operasyon kullanıcıları yüksek tutarlı talepleri onaylar veya gerekçeyle reddeder.
 
 Gerçek para, EFT/FAST veya banka entegrasyonu içermez. `BF-…-TRY` numaraları uygulama içi hesap numaralarıdır.
@@ -12,6 +14,8 @@ Gerçek para, EFT/FAST veya banka entegrasyonu içermez. `BF-…-TRY` numaralar�
 - Talebi oluşturan kişinin kendi talebini onaylamasını veya reddetmesini engelleyen kontrol.
 - Ret gerekçesi, işlem referansı ve denetim kayıtları.
 - Türkçe, masaüstü ve mobil ekranlara uyarlanan arayüz.
+
+![BankFlow arayüzü, sentetik demo verileri](assets/screenshots/dashboard.png)
 
 ## Teknik yapı
 

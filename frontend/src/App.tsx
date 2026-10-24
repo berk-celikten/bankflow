@@ -835,7 +835,7 @@ function TransferTable({
       </table>
     </div>
   ) : (
-    <Empty text="Transfer yaptığınızda işlemleriniz burada görünecek." />
+    <Empty text="Bu görünümde listelenecek bir transfer bulunamadı." />
   );
 }
 function HistoryPage({

@@ -13,3 +13,5 @@ work
 .env
 .env.*
 *.log
+AGENTS.md
+**/.local
