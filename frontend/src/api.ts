@@ -21,7 +21,8 @@ export async function api<T>(
   path: string,
   options: RequestInit = {},
 ): Promise<T> {
-  const method = options.method || "GET";
+  const method = (options.method || "GET").toUpperCase();
+  const mutation = !["GET", "HEAD", "OPTIONS"].includes(method);
   if (method !== "GET" && !csrf) await refreshCsrf();
   const headers = new Headers(options.headers);
   if (method !== "GET" && csrf) headers.set(csrf.headerName, csrf.token);
@@ -39,12 +40,31 @@ export async function api<T>(
   }
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));
-    if (
-      response.status === 401 &&
-      path !== "/auth/login" &&
-      path !== "/auth/me"
-    )
+    const notifyExpiry = path !== "/auth/login" && path !== "/auth/me";
+    if (response.status === 401 && notifyExpiry) {
+      csrf = undefined;
       window.dispatchEvent(new Event("session-expired"));
+    }
+    if (response.status === 403 && mutation && notifyExpiry) {
+      let expired = false;
+      try {
+        const session = await fetch("/api/auth/me", {
+          credentials: "same-origin",
+        });
+        expired = session.status === 401;
+      } catch {
+        // An unavailable session check must preserve the original forbidden response.
+      }
+      if (expired) {
+        csrf = undefined;
+        window.dispatchEvent(new Event("session-expired"));
+        throw new ApiError(
+          401,
+          "UNAUTHENTICATED",
+          "Oturumunuz sona erdi. Lütfen yeniden giriş yapın.",
+        );
+      }
+    }
     throw new ApiError(
       response.status,
       error.code || "REQUEST_FAILED",
