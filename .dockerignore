@@ -1,0 +1,15 @@
+.git
+.codex
+.vscode
+.local
+memory
+docs
+scripts
+work
+**/node_modules
+**/target
+**/.cache
+**/dist
+.env
+.env.*
+*.log

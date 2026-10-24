@@ -1,0 +1,38 @@
+name: bankflow
+services:
+  oracle:
+    image: gvenzl/oracle-free:23.26.3-slim-faststart
+    environment:
+      ORACLE_PASSWORD: ${BANKFLOW_ORACLE_PASSWORD:?Run tools/configure.ps1 first}
+      APP_USER: bankflow
+      APP_USER_PASSWORD: ${BANKFLOW_DB_PASSWORD:?Run tools/configure.ps1 first}
+    ports:
+      - "127.0.0.1:1521:1521"
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 10s
+      timeout: 10s
+      start_period: 120s
+      retries: 30
+    shm_size: 1gb
+    mem_limit: 3g
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      BANKFLOW_DB_URL: jdbc:oracle:thin:@//oracle:1521/FREEPDB1
+      BANKFLOW_DB_USER: bankflow
+      BANKFLOW_DB_PASSWORD: ${BANKFLOW_DB_PASSWORD:?Run tools/configure.ps1 first}
+      BANKFLOW_DEMO_PASSWORD: ${BANKFLOW_DEMO_PASSWORD:?Run tools/configure.ps1 first}
+      BANKFLOW_COOKIE_SECURE: "false"
+    depends_on:
+      oracle:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8080:8080"
+volumes:
+  oracle-data:
