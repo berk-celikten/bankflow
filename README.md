@@ -2,6 +2,14 @@
 
 [![Build and test](https://github.com/berk-celikten/bankflow/actions/workflows/checks.yml/badge.svg)](https://github.com/berk-celikten/bankflow/actions/workflows/checks.yml)
 
+## English overview
+
+**BankFlow is a full-stack banking simulation built with Java 21, Spring Boot, React, TypeScript and Oracle.** Customers can view virtual TRY accounts and transaction history and submit transfers; high-value requests require approval or rejection by a separate operations user.
+
+Spring Security and Spring Data JPA support access control and persistence. Transfers use database transactions, account locking and idempotent requests, with audit records for key actions. The project includes backend, frontend and Oracle integration tests and was developed with OpenAI Codex using goal-based, multi-agent workflows. It uses demo data.
+
+## Türkçe dokümantasyon
+
 Java Spring Boot, React ve Oracle ile geliştirilen bankacılık simülasyonu. Müşteriler sanal TL hesaplarını ve hesap hareketlerini görüntüler, transfer oluşturur; operasyon kullanıcıları yüksek tutarlı talepleri onaylar veya gerekçeyle reddeder.
 
 Gerçek para, EFT/FAST veya banka entegrasyonu içermez. `BF-…-TRY` numaraları uygulama içi hesap numaralarıdır.
